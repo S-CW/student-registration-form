@@ -1,5 +1,6 @@
-from flask_sqlalchemy import SQLAlchemy
-from website import db
+from flask_login import UserMixin
+from extension import db
+
 
 # Table for many to many relationship of student table and course table
 registered_student = db.Table('registered_student', 
@@ -7,10 +8,11 @@ registered_student = db.Table('registered_student',
     db.Column('course_id', db.Integer, db.ForeignKey('course.id'))
 )
 
-class Student(db.Model):
+class Student(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), nullable=False)
+    name = db.Column(db.String(80), nullable=False)
     email = db.Column(db.String(80), unique=True, nullable=False)
+    password = db.Column(db.String(150))
     subject_interested = db.relationship('Course', secondary=registered_student, lazy='subquery', backref=db.backref('registered', lazy=True))
 
     
@@ -25,3 +27,6 @@ class Session(db.Model):
     date_time = db.Column(db.DateTime, nullable=False)
     classroom = db.Column(db.Integer, nullable=False)
     course_id = db.Column(db.Integer, db.ForeignKey('course.id'), nullable=False)
+
+
+
