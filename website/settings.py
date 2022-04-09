@@ -7,5 +7,5 @@ load_dotenv()
 SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI')
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
-
-# Print out the list of key available in application the environment variable
+# Athentication setting
+LOGIN_DISABLED = os,os.environ.get('LOGIN_DISABLED')
