@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+
+{% block title %}
+User
+{% endblock %}
+
+{% block styles %}
+{{super.super()}}
+  <link rel="stylesheet" href="{{url_for('static', filename='css/signin.css')}}">
+{% endblock %}
+
+{% block content %}
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Student Course Registrar</a>
+    </div>
+    <div id="navbar" class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#">Home</a></li>
+        <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div>
+</nav>
+    <div class="container">
+      <h1 align="center">Welcome {{user.student_name}}!</h1>
+    </div>
+    <div class="container">
+      <div>
+        <div class="col-md-12 text-center">Student List</div>
+      </div>
+    <div>
+      <table class="table">
+        <thead style="background-color: brown;color: aliceblue;">
+          <th>Subject Code</th>
+          <th>Subject Registered</th>
+          <th>Credit</th>
+          <th>Session</th>
+          <th>Action</th>
+        </thead>
+        <tbody>
+          {% for user in registered %}
+          <tr>
+            <td>{{ user.course.code }}</td>
+            <td>{{ user.course.subject }}</td>
+            <td>{{ user.course.credit_score }}</td>
+            <td>{{ user.session.datetime }}</td>
+            <td>
+              <span style="font-size: 24px;color:red;">
+              <a href="/{{user.course_id}}/delete">  <i class="fas fa-trash-alt"></i></a></span>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+      <form class="form-signin" method="POST" action="/user">
+        <h2 class="form-signin-heading">Select a subject to register</h2>
+        {{ form.hidden_tag() }}
+        {{ wtf.form_field(form.option) }}
+        {{ wtf.form_field(form.timeslot) }}
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
+      </form>
+      <script>
+        let subject_select = document.getElementById('option');
+        let datetime_select = document.getElementById('timeslot');
+
+        subject_select.onchange = function() {
+          subject = subject_select.value;
+
+          fetch('/session/' + subject).then(function(response) {
+            
+            response.json().then(function(data) {
+              let optionHTML = ''
+
+              for (let session of data.slot) {
+                optionHTML += '<option value="' + session.id + '">' + session.datetime + '</option>'
+              }
+
+              datetime_select.innerHTML = optionHTML
+
+            });
+          });
+        }
+      </script>
+
+    </div> <!-- /container -->
+{% endblock %}

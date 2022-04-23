@@ -1,10 +1,10 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, redirect, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user
 
-from models import Student, Course, Session
+from models import Student
 from extension import db, login_manager
-import forms
+from forms import Login, RegistrationForm
 
 
 bp = Blueprint('auth', __name__)
@@ -22,7 +22,7 @@ def index():
 
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
-    form = forms.Login()
+    form = Login()
 
     if form.validate_on_submit():
         user = Student.query.filter_by(username=form.username.data).first()
@@ -30,8 +30,7 @@ def login():
             if check_password_hash(user.password, form.password.data):
                 login_user(user)
 
-                # redirect user to user view
-                return '<h1>you are logged in</h1>'
+                return redirect(url_for('view.get_data'))
         
         return '<h1>Invalid username or password</h1>'
 
@@ -43,14 +42,14 @@ def login():
 @login_required
 def logout():
     logout_user()
-    return 'Logged out'
+    return redirect('/')
 
 
 
 
 @bp.route('/sign-up', methods=['GET', 'POST'])
 def sign_up():
-    form = forms.RegistrationForm()
+    form = RegistrationForm()
 
     if form.validate_on_submit():
         hashed_password = generate_password_hash(form.password.data, method='sha256')
@@ -61,8 +60,3 @@ def sign_up():
         return '<h1>New user has been created!</h1>'
 
     return render_template('signup.html', form=form)
-
-
-@bp.route('/test')
-def testing():
-    return '<h1>Ok</h1>'

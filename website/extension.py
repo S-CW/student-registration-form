@@ -10,5 +10,4 @@ Bootstrap = Bootstrap()
 db = SQLAlchemy()
 admin = Admin()
 migrate = Migrate()
-
 login_manager = LoginManager()

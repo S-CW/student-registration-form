@@ -2,3 +2,4 @@ venv/
 .env
 *.xlsx
 *.pyc
+*.py

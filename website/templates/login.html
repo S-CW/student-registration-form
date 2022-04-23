@@ -1,9 +1,7 @@
-{% extends "bootstrap/base.html" %}
+{% extends "base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
-{% block title %}
-Login
-{% endblock %}
+{% block title %} Login {% endblock %}
 
 {% block styles %}
 {{super()}}
@@ -11,6 +9,7 @@ Login
 {% endblock %}
 
 {% block content %}
+{{super()}}
     <div class="container">
 
       <form class="form-signin" method="POST" action="/login">
@@ -21,6 +20,5 @@ Login
         {{ wtf.form_field(form.remember) }}
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
       </form>
-
     </div> <!-- /container -->
 {% endblock %}

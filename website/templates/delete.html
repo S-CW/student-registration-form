@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+ 
+ 
+ 
+{% block title %} Delete {% endblock %}
+ 
+ 
+ 
+{% block body %}
+<div class="container">
+<form action='' method="post">
+    Click YES to confirm
+    <input type = "submit" value="YES" class="btn btn-danger">
+    <a href='/user'>Cancel</a>
+</form>
+</div>
+{% endblock %}

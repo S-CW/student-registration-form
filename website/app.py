@@ -3,7 +3,7 @@ from flask import Flask
 import admins
 from extension import db, admin, login_manager, migrate, Bootstrap
 from auth import bp
-import models
+from views import bp2
 
 
 
@@ -19,6 +19,7 @@ def create_app(config_file='settings.py'):
     Bootstrap.init_app(app)
 
     app.register_blueprint(bp)
+    app.register_blueprint(bp2)
     
     return app
     
