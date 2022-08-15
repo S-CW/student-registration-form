@@ -12,6 +12,7 @@ User
 {% endblock %}
 
 {% block content %}
+{{super()}}
 <nav class="navbar navbar-inverse navbar-fixed-top">
   <div class="container">
     <div class="navbar-header">
@@ -53,7 +54,7 @@ User
             <td>{{ user.session.datetime }}</td>
             <td>
               <span style="font-size: 24px;color:red;">
-              <a href="/{{user.course_id}}/delete">  <i class="fas fa-trash-alt"></i></a></span>
+              <a href="/{{user.course_id}}/{{user.session_id}}/delete">  <i class="fas fa-trash-alt"></i></a></span>
             </td>
           </tr>
           {% endfor %}

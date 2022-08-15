@@ -13,9 +13,9 @@ class Enrolled(db.Model):
 
     __table_args__ = (db.UniqueConstraint(student_id, course_id, session_id),)
 
-    student = db.relationship('Student', backref='student_course_session', passive_deletes='all')
-    course = db.relationship('Course', backref='student_course_session', passive_deletes='all')
-    session = db.relationship('Session', backref='student_course_session', passive_deletes='all')
+    student = db.relationship('Student', back_populates='student_enrolled', passive_deletes='all')
+    course = db.relationship('Course', back_populates='course_enrolled', passive_deletes='all')
+    session = db.relationship('Session', back_populates='session_enrolled', passive_deletes='all')
 
 
 class Student(db.Model, UserMixin):
@@ -23,8 +23,8 @@ class Student(db.Model, UserMixin):
     username = db.Column(db.String(15), unique=True)
     student_name = db.Column(db.String(80), nullable=False)
     email = db.Column(db.String(50), unique=True, nullable=False)
-    password = db.Column(db.String(80))
-    courses = db.relationship('Course', secondary='student_enrolled')
+    password = db.Column(db.String(250))
+    student_enrolled = db.relationship('Enrolled', cascade="all,delete", back_populates='student')
 
     
 class Course(db.Model):
@@ -32,10 +32,10 @@ class Course(db.Model):
     subject = db.Column(db.String(80), nullable=False)
     credit_score = db.Column(db.Integer, nullable=False, default=0)
     code = db.Column(db.Integer, nullable=False, default=0)
-    student = db.relationship('Student', secondary='student_enrolled')
+    course_enrolled = db.relationship('Enrolled', back_populates='course')
     
     def __repr__(self):
-        return 'Choice {}'.format(self.subject)
+        return self.subject
 
 # One to many relation of course table to session table
 class Session(db.Model):
@@ -43,6 +43,5 @@ class Session(db.Model):
     datetime = db.Column(db.String(50), nullable=False)
     classroom = db.Column(db.Integer, nullable=False)
     course_id = db.Column(db.Integer, db.ForeignKey('course.id'))
-
-
+    session_enrolled = db.relationship('Enrolled', back_populates='session')
 

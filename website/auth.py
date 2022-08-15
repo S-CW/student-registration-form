@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for
+from flask import Blueprint, render_template, redirect, url_for, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user
 
@@ -29,10 +29,10 @@ def login():
         if user:
             if check_password_hash(user.password, form.password.data):
                 login_user(user)
-
-                return redirect(url_for('view.get_data'))
-        
-        return '<h1>Invalid username or password</h1>'
+                flash('Login success.')
+                return redirect(url_for('view.get_data'))        
+        flash('Invalid username or password')
+        return redirect(url_for('auth.login'))
 
 
     return render_template('login.html', form=form)
@@ -42,7 +42,8 @@ def login():
 @login_required
 def logout():
     logout_user()
-    return redirect('/')
+    flash('You have logged out!')
+    return redirect(url_for('auth.login'))
 
 
 
@@ -57,6 +58,7 @@ def sign_up():
         db.session.add(new_user)
         db.session.commit()
 
-        return '<h1>New user has been created!</h1>'
+        flash('Registration completed. Please sign in.')
+        return redirect(url_for('auth.login')) 
 
     return render_template('signup.html', form=form)

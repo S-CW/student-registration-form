@@ -13,7 +13,7 @@ def create_app(config_file='settings.py'):
     app.config.from_pyfile(config_file)
     
     db.init_app(app)
-    admin.init_app(app, index_view=admins.MyAdminIndexView())
+    admin.init_app(app, index_view=admins.MyAdminHomeView())
     migrate.init_app(app, db)
     login_manager.init_app(app)
     Bootstrap.init_app(app)
