@@ -41,7 +41,7 @@ class Course(db.Model):
 class Session(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     datetime = db.Column(db.String(50), nullable=False)
-    classroom = db.Column(db.Integer, nullable=False)
+    classroom = db.Column(db.String(50), nullable=False)
     course_id = db.Column(db.Integer, db.ForeignKey('course.id'))
     session_enrolled = db.relationship('Enrolled', back_populates='session')
 
