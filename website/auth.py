@@ -62,3 +62,12 @@ def sign_up():
         return redirect(url_for('auth.login')) 
 
     return render_template('signup.html', form=form)
+
+
+@bp.route('/admin')
+def admin():
+    return render_template('admin/index.html')
+
+@bp.route('/admin2')
+def admin_access():
+    return render_template('admin/index_access.html')
