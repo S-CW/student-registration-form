@@ -41,3 +41,5 @@ Creating database:
        from website.app import db, create_app
        db.create_all(app=create_app())
 ```
+
+Demo app deployed at heroku --> [Demo app](https://registrar-form.herokuapp.com)
